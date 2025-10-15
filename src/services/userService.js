@@ -1,5 +1,7 @@
 import { users } from "../models/userModel.js";
 
+let lastUserId = users.length;
+
 export const getAllUsers = () => {
   return users;
 };
@@ -23,8 +25,25 @@ export const createUser = async (newUser) => {
     throw error;
   }
 
-  const id = users.length ? users[users.length - 1].id + 1 : 1;
-  const user = { id, ...newUser };
+  const newId = lastUserId + 1;
+  const user = { id: newId, ...newUser };
   users.push(user);
+
+  lastUserId = newId;
   return user;
+};
+
+export const deleteUser = async (id) => {
+  const index = users.findIndex((user) => user.id === Number(id));
+
+  if (index === -1) {
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const deletedUser = users[index];
+  users.splice(index, 1);
+
+  return deletedUser;
 };

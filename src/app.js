@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { deleteUser } from "./services/userService.js";
 
 const app = express();
 

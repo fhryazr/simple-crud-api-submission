@@ -33,7 +33,6 @@ export const getUserById = (req, res, next) => {
 export const createUser = async (req, res, next) => {
   try {
     const { error, value } = createUserSchema.validate(req.body);
-    console.log(req.body);
     if (error) {
       return res.status(400).json({
         status: error,
@@ -47,6 +46,21 @@ export const createUser = async (req, res, next) => {
       status: "success",
       message: "User created successfully",
       data: newUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+    const deletedUser = await userService.deleteUser(id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Delete User Successfully",
+      data: deletedUser,
     });
   } catch (error) {
     next(error);
